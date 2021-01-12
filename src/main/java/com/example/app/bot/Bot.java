@@ -1,4 +1,5 @@
 package com.example.app.bot;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,16 +67,20 @@ public class Bot extends TelegramLongPollingBot {
 
             Message message = update.getMessage();
 
-            if (message.getText().equals("/help")) {
-                sendMsg(message, "Type message, and it will be translated into Russian or English");
-            }
-            else {
-                try {
-
-                    sendMsg(message,Translator.getTranslation(message.getText()));
-                } catch (IllegalArgumentException | IOException e) {
+            switch (message.getText()) {
+                case ("/start"):
+                    sendMsg(message, "Hello! Let's translate something ;)");
+                    break;
+                case ("/help"):
+                    sendMsg(message, "Type message, and it will be translated into Russian or English");
+                    break;
+                default:
+                    try {
+                        sendMsg(message,Translator.getTranslation(message.getText()));
+                    } catch (IllegalArgumentException | IOException e) {
                         e.printStackTrace();
-                }
+                    }
+                    break;
             }
         }
     }

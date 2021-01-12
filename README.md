@@ -2,4 +2,4 @@
 
 My pet-project with telegram bot.
 
-![Bot preview](/images/preview.jpeg)
+![Bot preview](/images/preview.jpg)
