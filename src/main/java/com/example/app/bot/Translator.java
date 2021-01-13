@@ -33,7 +33,19 @@ public class Translator {
 
         JSONArray jsonArray = language.getJSONArray("languages");
 
+        TranslateOptions translateOptions = new TranslateOptions.Builder().addText(message).modelId(identifyLanguage(jsonArray)).build();
+
+        TranslationResult result = languageTranslator.translate(translateOptions).execute().getResult();
+
+        JSONObject translation = new JSONObject(result);
+
+        return translation.getJSONArray("translations").getJSONObject(0).getString("translation");
+    }
+
+    public static String identifyLanguage(JSONArray jsonArray) {
+
         String languageToLanguage = "en-ru";
+
         for (int i = 0; i < jsonArray.length(); i++) {
             String lang = jsonArray.getJSONObject(i).getString("language");
 
@@ -48,18 +60,7 @@ public class Translator {
             }
         }
 
-        TranslateOptions translateOptions = new TranslateOptions.Builder().addText(message).modelId(languageToLanguage).build();
-
-        TranslationResult result = languageTranslator.translate(translateOptions).execute().getResult();
-
-        JSONObject translation = new JSONObject(result);
-
-
-        String ans = "{" + languageToLanguage + "} \n" + translation.getJSONArray("translations").getJSONObject(0).getString("translation");
-        System.out.println(ans);
-        return  ans;
-
-
+        return languageToLanguage;
     }
 
 }

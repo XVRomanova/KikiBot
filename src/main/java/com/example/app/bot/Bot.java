@@ -67,22 +67,30 @@ public class Bot extends TelegramLongPollingBot {
 
             Message message = update.getMessage();
 
-            switch (message.getText()) {
-                case ("/start"):
-                    sendMsg(message, "Hello! Let's translate something ;)");
-                    break;
-                case ("/help"):
-                    sendMsg(message, "Type message, and it will be translated into Russian or English");
-                    break;
-                default:
-                    try {
-                        sendMsg(message,Translator.getTranslation(message.getText()));
-                    } catch (IllegalArgumentException | IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-            }
+            sendMsg(message, generateAnswer(message));
         }
+    }
+
+    public String generateAnswer(Message message) {
+
+        String ans = "";
+
+        switch (message.getText()) {
+            case ("/start"):
+                ans = "Hello! Let's translate something ;)";
+                break;
+            case ("/help"):
+                ans = "Type message, and it will be translated into Russian or English";
+                break;
+            default:
+                try {
+                    ans = Translator.getTranslation(message.getText());
+                } catch (IllegalArgumentException | IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+        return ans;
     }
 
     public void setButtons(SendMessage sendMessage){
